@@ -25,6 +25,16 @@ We need to turn on billing alerts to receive such alerts:
 
 ---
 
+## Create AWS SNS topic
+SNS is AWS's pub/sub message que service. To create a topic
+```
+aws sns create-topic --name {topic-name}
+```
+
+Returns the topic ARN.
+
+---
+
 ## Create AWS Budget
 
 Get AWS account ID:
@@ -38,4 +48,27 @@ aws budgets create-budget \
     --account-id $AWS_ACCOUNT_ID \
     --budget file://aws/json/budget.json \
     --notifications-with-subscribers file://aws/json/budget-notifications-with-subscribers.json
+```
+
+We can use an SNS topic and subscribe to it to get the alerts:
+
+```
+TOPIC_ARN=$(aws sns create-topic --name billing-alarm --query "TopicArn" --output text)
+```
+
+To set up the subscription:
+
+```
+aws sns subscribe \
+    --topic-arn=$TOPIC_ARN
+    --protocol email
+    --notification-endpoint {email-address}
+```
+---
+
+## CloudWatch alarm
+The CloudWatch component completes the cycle to actually receive the alerts (?)
+
+```
+aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
 ```

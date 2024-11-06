@@ -72,3 +72,37 @@ The CloudWatch component completes the cycle to actually receive the alerts (?)
 ```
 aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
 ```
+
+---
+
+# Week0 - Cloud Security - Best practices from day 0
+
+**Goal of security**: Identify for and inform the business any technical risk that the business may be exposed to.
+
+- reducing impact of breach
+- protect against data breaches / theft
+- reducing human error (responsible for data leaks)
+
+## Why it needs practice?
+- complexity
+- always chasing our tail (new services)
+- hackers are improving their game (AI)
+
+## Useful steps and actions
+1. MFA for root user (!) -> IAM
+2. Create organization unit -> AWS Organizations
+  - how many types of OU?
+  - account management
+  - automate vending accounts (designated owner)
+3. AWS Cloud Trail -> incurrs costs
+  - monitor data security & residence
+  - understand region vs. availability zone (sub-network in region) vs. global services concepts
+  - audit logs for IR/Forensics
+4. Create IAM users
+  - 3 kinds of users: human user, system users
+5. IAM Roles
+  - 2 types of IAM roles and policies
+  - policy can be attached to groups;
+  - principle of least privilidge (!)
+6. Enable AWS organization SCP -> AWS Organizations
+  - SCP = service control policies

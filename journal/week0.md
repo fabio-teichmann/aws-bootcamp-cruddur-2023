@@ -106,3 +106,12 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.js
   - principle of least privilidge (!)
 6. Enable AWS organization SCP -> AWS Organizations
   - SCP = service control policies
+
+# Week0 - AWS Well-Architected
+Considers 6 pillars to gage whether one's setup is in line with AWS's recommended best practices. The framework can serve as a checklist / blueprint for the architecture design of a system.
+1. Operational excellence ->
+2. Security
+3. Reliability
+4. Performance efficiency
+5. Cost optimization
+6. Sustainability

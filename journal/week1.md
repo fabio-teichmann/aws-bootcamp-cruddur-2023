@@ -104,6 +104,12 @@ exit
 ```
 If we create another container mounting the same volume, the data will be accessible still. It is stored in the VM file system inside the defined volume.
 
+Example of how the volume can used to store data of databases at its know path:
+
+```bash
+# Create a container from the postgres container image and mount its known storage path into a volume named pgdata
+docker run -it --rm -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=foobarbaz postgres:15.1-alpine
+```
 
 ii) Bind Mount
 
@@ -113,3 +119,6 @@ docker run -it --rm --mount type=bind,source=${PWD}/my-data,destination=/my-data
 ```
 
 **Note**: heavy read/write operations suffer from performance using a bind mount.
+
+## Container use cases
+Container images can be used to quickly and easily setup an environment of desired versioning. This is especially useful for prototyping, when those environments are not accessible locally, or when we want to test changes of behavior between two versions of an environment (e.g. breaking change from Python 3.11 to 3.12).

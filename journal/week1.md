@@ -1,5 +1,5 @@
 # Week 1 — App Containerization
-
+## Docker for Cruddur
 
 Build and run a docker images specifying name and tag (by default tag is `latest` if not specified):
 ```
@@ -63,3 +63,53 @@ General rule of thumb: a container should only contain as little information and
 
 ## DevSecOps practices ??
 TB Researched
+
+# Week1 - Docker Basics
+
+## Data
+Generally, all data stored inside a container (and all other configuration that was added at container runtime) vanishes once the container stops. There are 2 options, however, of persisting data with containers:
+1. Volume mount -> dedicates storage within the container to storage (default config)
+2. Bind mount -> reserves space on host machine to store data (usually slower but easier to get visibility of files created/edited within the container)
+
+Here's an experiment to illustrate how data disappears (using the `--rm` flag):
+
+```bash
+docker run -it --rm ubuntu:22.04
+
+# inside of the container:
+mkdir my-data
+echo "Hello, container!" > /my-data/hello.txt
+
+# access content
+cat /my-data/hello.txt
+exit
+```
+
+Once the container stops and we bring up a container with the same image (ubuntu), the data will not be available any longer. On the contrary, if the container is named, stopped and started again, the data will remain (until the container is removed from the local environment) - no permanent persistency!
+
+i) Volume Mount
+
+To mount to a volume, we need to create a volume and attach it to the container when we create it:
+```bash
+docker volume create my-volume
+# create container with the volume
+docker run -it --rm --mount source=my-volume,destination=/my-data/ ubuntu:22.04
+# alternative command
+docker run -it --rm -v my-volume:/my-data ubuntu:22.04
+
+# create data
+echo "Hello, container!" > /my-data/hello.txt
+
+exit
+```
+If we create another container mounting the same volume, the data will be accessible still. It is stored in the VM file system inside the defined volume.
+
+
+ii) Bind Mount
+
+The bind mount needs to exist locally on host. All changes will be visible/available within that directory on the local host.
+```bash
+docker run -it --rm --mount type=bind,source=${PWD}/my-data,destination=/my-data ubuntu:22.04
+```
+
+**Note**: heavy read/write operations suffer from performance using a bind mount.

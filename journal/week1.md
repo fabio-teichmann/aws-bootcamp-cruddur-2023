@@ -122,3 +122,22 @@ docker run -it --rm --mount type=bind,source=${PWD}/my-data,destination=/my-data
 
 ## Container use cases
 Container images can be used to quickly and easily setup an environment of desired versioning. This is especially useful for prototyping, when those environments are not accessible locally, or when we want to test changes of behavior between two versions of an environment (e.g. breaking change from Python 3.11 to 3.12).
+
+
+# Week1 - Docker Practice
+
+## Containers for databases
+
+The following Dockerfile spins up a container from a PostgreSQL image (most basic setup):
+
+```Dockerfile
+FROM postgres:latest
+
+# Set environment variables for PostgreSQL
+# (replace with your database name, user, and password)
+ENV POSTGRES_DB=mydatabase
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=password
+```
+
+**Note**: the image `latest` will always be automatically updated. It is strongly advised to use images of a specific postgres version to avoid any issues/breaks due to version incompatibilities!

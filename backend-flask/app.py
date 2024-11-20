@@ -34,10 +34,18 @@ from services.notifications_activities import *
 # trace.set_tracer_provider(provider)
 # tracer = trace.get_tracer(__name__)
 
+# AWS X-Ray ----------
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
 app = Flask(__name__)
 # # initialize app with instrumetors (honeycomb)
 # FlaskInstrumentor().instrument_app(app)
 # RequestsInstrumentor().instrument()
+
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service="Cruddur", dynamic_naming=xray_url)
+XRayMiddleware(app, xray_recorder)
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')

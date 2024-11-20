@@ -14,30 +14,30 @@ from services.create_message import *
 from services.show_activity import *
 from services.notifications_activities import *
 
-# # HoneyComb -------------------
-from opentelemetry import trace
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.instrumentation.requests import RequestsInstrumentor
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OLTPSpanExporter
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter, SimpleSpanProcessor
+# # # HoneyComb -------------------
+# from opentelemetry import trace
+# from opentelemetry.instrumentation.flask import FlaskInstrumentor
+# from opentelemetry.instrumentation.requests import RequestsInstrumentor
+# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OLTPSpanExporter
+# from opentelemetry.sdk.trace import TracerProvider
+# from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter, SimpleSpanProcessor
 
-# # HoneyComb -------------------
-# # Initialize tracing and an exporter that can send data to HoneyComb
-provider = TracerProvider()
-processor = BatchSpanProcessor(OLTPSpanExporter())
-provider.add_span_processor(processor)
+# # # HoneyComb -------------------
+# # # Initialize tracing and an exporter that can send data to HoneyComb
+# provider = TracerProvider()
+# processor = BatchSpanProcessor(OLTPSpanExporter())
+# provider.add_span_processor(processor)
 
-simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
-provider.app_span_processor(simple_processor)
+# simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
+# provider.app_span_processor(simple_processor)
 
-trace.set_tracer_provider(provider)
-tracer = trace.get_tracer(__name__)
+# trace.set_tracer_provider(provider)
+# tracer = trace.get_tracer(__name__)
 
 app = Flask(__name__)
-# initialize app with instrumetors (honeycomb)
-FlaskInstrumentor().instrument_app(app)
-RequestsInstrumentor().instrument()
+# # initialize app with instrumetors (honeycomb)
+# FlaskInstrumentor().instrument_app(app)
+# RequestsInstrumentor().instrument()
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
@@ -144,4 +144,4 @@ def data_activities_reply(activity_uuid):
   return
 
 if __name__ == "__main__":
-  app.run(debug=True)
+  app.run(debug=True, port=4567, host="0.0.0.0")

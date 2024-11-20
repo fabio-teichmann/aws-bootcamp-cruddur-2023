@@ -35,6 +35,29 @@ python -m pip install opentelemetry-instrumentation \
                       opentelemetry-exporter-otlp
 ```
 
+**Issue**: trying to connect to HoneyComb, I ran into two errors:
+1. not finding `opentelemtry` when trying yo use `trace` within the code
+2. HoneyComb not receiving any data when app is running and APIs are triggered
+
+In the OpenTelemetry docs I found the following instruction to run the app:
+```bash
+export OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+opentelemetry-instrument \
+    --traces_exporter console \
+    --metrics_exporter console \
+    --logs_exporter console \
+    --service_name dice-server \
+    flask run -p 8080
+```
+
+I tried to include the env var into the `docker-compose.yaml` and re-run the app in docker. This didn't trigger HoenyComb, unfortunately, but it showed traces in the console.
+
+> Upon further investigation, the BE container was not set up properly:
+> - missing OTEL dependencies
+> - honeycomb api key not set
+
+Even after the key was set properly and after I exchanged the `CMD` in the Dockerfile to what HoneyComb instructs, the HoneyComb platform still does not receive any data. I will revisit this topic at a later time since currently it is not critical to move forward.
+
 
 ## Cloud Native Computing Foundation
 (Link)[https://www.cncf.io/]

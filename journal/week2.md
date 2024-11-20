@@ -56,10 +56,43 @@ I tried to include the env var into the `docker-compose.yaml` and re-run the app
 > - missing OTEL dependencies
 > - honeycomb api key not set
 
-Even after the key was set properly and after I exchanged the `CMD` in the Dockerfile to what HoneyComb instructs, the HoneyComb platform still does not receive any data. I will revisit this topic at a later time since currently it is not critical to move forward.
+Even after the key was set properly and after I exchanged the `CMD` in the Dockerfile to what HoneyComb instructs (`opentelemetry-instrument python myapp.py`), the HoneyComb platform still does not receive any data. I will revisit this topic at a later time since currently it is not critical to move forward.
 
 
 ## Cloud Native Computing Foundation
 (Link)[https://www.cncf.io/]
 
 TB researched
+
+
+# Week 2 - Security
+
+**Observability = Logs + Metrics + Traces**
+
+## Central obervability platform - security
+- AWS Security Hub (use EventBridge to inform the hub)
+    - EventBridge: event bus for events, paid service
+    - can trigger a lambda function to take action based on event
+- SIEM (Security Incident and Event Management)
+- open source dashboard
+- event driven architecture with AWS services
+
+# Week 2 - AWS Tools
+Needs a daemon to receive data.
+
+## X-Ray
+Install python sdk (into backend):
+```bash
+pip install aws-xray-sdk
+```
+Add it back to requirements:
+```bash
+pip freeze > requirements.txt
+```
+
+Create X-Ray group:
+```bash
+aws xray create-group \
+    --group-name "Cruddur" \
+    --filter-expression "service(\"backend-flask\")"
+```
